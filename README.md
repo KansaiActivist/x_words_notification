@@ -47,3 +47,4 @@ Yahoo!リアルタイム検索の非公式API（`https://search.yahoo.co.jp/real
 - `popup.html` / `popup.js` — 設定用UI
 
 
+
