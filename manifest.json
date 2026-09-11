@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "X投稿キーワード通知（Yahooリアルタイム検索）",
+  "version": "1.0.0",
+  "description": "Yahooリアルタイム検索APIを使って、指定したXアカウントの投稿に特定のキーワードが含まれたらデスクトップ通知します。",
+  "permissions": ["storage", "alarms", "notifications"],
+  "host_permissions": ["https://search.yahoo.co.jp/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

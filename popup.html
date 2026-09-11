@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>X投稿キーワード通知</title>
+<style>
+  :root {
+    color-scheme: light;
+  }
+  body {
+    width: 320px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic", sans-serif;
+    margin: 0;
+    padding: 16px;
+    background: #f7f8fa;
+    color: #1a1a1a;
+  }
+  h1 {
+    font-size: 15px;
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h1 img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 10px 0 4px;
+    color: #444;
+  }
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px 8px;
+    border: 1px solid #d5d8dc;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  input:focus {
+    outline: none;
+    border-color: #1da1f2;
+  }
+  .row {
+    display: flex;
+    gap: 8px;
+  }
+  .row > div {
+    flex: 1;
+  }
+  .buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  button {
+    flex: 1;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #startBtn {
+    background: #1da1f2;
+    color: white;
+  }
+  #startBtn:hover { background: #1a91da; }
+  #stopBtn {
+    background: #e6e9ec;
+    color: #333;
+  }
+  #stopBtn:hover { background: #dadde0; }
+  #checkNowBtn {
+    width: 100%;
+    margin-top: 8px;
+    background: #fff;
+    border: 1px solid #d5d8dc;
+    color: #333;
+  }
+  #checkNowBtn:hover { background: #f0f1f2; }
+  .status {
+    margin-top: 14px;
+    padding: 10px;
+    background: white;
+    border: 1px solid #e2e4e7;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .status .label {
+    color: #888;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge.on {
+    background: #e5f7ea;
+    color: #1a8a3d;
+  }
+  .badge.off {
+    background: #f1f1f1;
+    color: #777;
+  }
+  .error {
+    color: #d33;
+    margin-top: 6px;
+    word-break: break-all;
+  }
+  .hint {
+    font-size: 11px;
+    color: #999;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <h1>🔔 X投稿キーワード通知</h1>
+
+  <label for="screenName">監視するXアカウント（@なし）</label>
+  <input id="screenName" type="text" placeholder="例: nhk_news" />
+
+  <label for="keyword">通知するキーワード</label>
+  <input id="keyword" type="text" placeholder="例: 速報" />
+
+  <label for="interval">チェック間隔（分）</label>
+  <input id="interval" type="number" min="1" step="1" value="5" />
+
+  <div class="buttons">
+    <button id="startBtn">監視開始</button>
+    <button id="stopBtn">停止</button>
+  </div>
+  <button id="checkNowBtn">今すぐチェック</button>
+
+  <div class="status" id="status">
+    読み込み中...
+  </div>
+
+  <div class="hint">
+    ※ Yahoo!リアルタイム検索の非公式APIを利用しています。日本語ツイート中心のインデックスのため、海外ユーザーの投稿は拾いにくい場合があります。
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
