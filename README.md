@@ -45,12 +45,5 @@ Yahoo!リアルタイム検索の非公式API（`https://search.yahoo.co.jp/real
 - `manifest.json` — 拡張機能の定義（Manifest V3）
 - `background.js` — 定期チェック・API呼び出し・通知処理（Service Worker）
 - `popup.html` / `popup.js` — 設定用UI
-- `icon16.png` / `icon48.png` / `icon128.png` — アイコン
 
-## カスタマイズのヒント
 
-- 複数アカウント／複数キーワードを監視したい場合は、`background.js` の `checkTweets` を
-  設定の配列に対してループさせる形に拡張してください（現状は1アカウント×1キーワードのみ対応）。
-- 通知音を鳴らしたい場合は `chrome.notifications.create` のオプションに `silent: false` を明示するか、
-  OS側の通知音設定に依存します。
-- 画像付き投稿のみに絞りたい場合は、APIリクエストに `mtype: "image"` を追加してください。
