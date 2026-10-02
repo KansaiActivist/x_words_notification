@@ -1,4 +1,3 @@
-
 const ALARM_NAME = "checkTweets";
 const API_ENDPOINT = "https://search.yahoo.co.jp/realtime/api/v1/pagination";
 
@@ -23,7 +22,6 @@ async function getSettings() {
   };
 }
 
-// ---- ハイライトタグの除去 ----
 function cleanText(text) {
   if (!text) return "";
   return text.replace(/\tSTART\t/g, "").replace(/\tEND\t/g, "");
