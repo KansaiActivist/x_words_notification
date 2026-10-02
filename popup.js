@@ -71,7 +71,6 @@ $checkNowBtn.addEventListener("click", async () => {
   $checkNowBtn.disabled = true;
   $checkNowBtn.textContent = "チェック中...";
   try {
-    // 手動チェック前に、現在の入力値を保存しておく（未開始でも設定は使う）
     const screenName = $screenName.value.trim().replace(/^@/, "");
     const keyword = $keyword.value.trim();
     if (screenName && keyword) {
