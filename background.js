@@ -1,11 +1,6 @@
-// background.js
-// Yahoo!リアルタイム検索の非公式APIを使い、
-// 「特定アカウント × 特定キーワード」の新着投稿を監視して通知する。
 
 const ALARM_NAME = "checkTweets";
 const API_ENDPOINT = "https://search.yahoo.co.jp/realtime/api/v1/pagination";
-
-// ---- 設定の読み書き ----
 
 async function getSettings() {
   const data = await chrome.storage.local.get([
@@ -34,8 +29,6 @@ function cleanText(text) {
   return text.replace(/\tSTART\t/g, "").replace(/\tEND\t/g, "");
 }
 
-// ---- 本体のチェック処理 ----
-
 async function checkTweets({ manual = false } = {}) {
   const settings = await getSettings();
 
@@ -47,7 +40,6 @@ async function checkTweets({ manual = false } = {}) {
     return { newEntries: [], error: "アカウント名またはキーワードが未設定です" };
   }
 
-  // ID:アカウント名 と キーワード のAND検索。新着順（mdを省略）で取得。
   const query = `ID:${settings.screenName} ${settings.keyword}`;
   const params = new URLSearchParams({
     p: query,
@@ -69,8 +61,6 @@ async function checkTweets({ manual = false } = {}) {
 
     const data = await res.json();
     const entries = data?.timeline?.entry || [];
-
-    // 新着順のはずだが念のため createdAt 降順にソート
     entries.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
     let newEntries = [];
@@ -80,7 +70,6 @@ async function checkTweets({ manual = false } = {}) {
         const idx = entries.findIndex((e) => e.id === settings.lastSeenId);
         newEntries = idx === -1 ? entries : entries.slice(0, idx);
       } else {
-        // 初回実行時は過去分をまとめて通知しないよう、基準点の記録のみ行う
         newEntries = [];
       }
 
@@ -92,8 +81,6 @@ async function checkTweets({ manual = false } = {}) {
     } else {
       await chrome.storage.local.set({ lastChecked: Date.now(), lastError: null });
     }
-
-    // 通知（古い順に、最大5件まで）
     const toNotify = newEntries.slice(0, 5).reverse();
     for (const entry of toNotify) {
       const bodyText = cleanText(entry.displayText).slice(0, 150);
@@ -114,7 +101,6 @@ async function checkTweets({ manual = false } = {}) {
   }
 }
 
-// 通知クリックでポストを開く
 chrome.notifications.onClicked.addListener((notifId) => {
   if (notifId.startsWith("tweet-")) {
     const id = notifId.replace("tweet-", "");
@@ -129,7 +115,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   }
 });
 
-// popup.js からのメッセージ処理
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type === "startMonitoring") {
     (async () => {
@@ -139,11 +124,11 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         keyword: msg.keyword.trim(),
         intervalMinutes: interval,
         monitoring: true,
-        lastSeenId: null, // アカウント/キーワード変更時は基準をリセット
+        lastSeenId: null, 
         lastError: null,
       });
       chrome.alarms.create(ALARM_NAME, { periodInMinutes: interval });
-      await checkTweets(); // 基準点を確立（初回は通知しない）
+      await checkTweets();
       sendResponse({ ok: true });
     })();
     return true;
